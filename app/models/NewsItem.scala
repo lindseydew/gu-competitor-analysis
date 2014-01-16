@@ -9,6 +9,8 @@ case class Sources(name: String, items: List[NewsItem])
 case class NewsItem(headline: String, url: String, position: Position)
 
 object NewsItems {
+  var info: Map[String, Sources] = Map[String, Sources]()
+
   def all = List(Sources("the guardian",List(
                 NewsItem("NSA spying on us again", "http://www.gu.com/2134",
                          Position(380, 480, 0, 0)),
