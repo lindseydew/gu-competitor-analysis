@@ -1,21 +1,20 @@
 @(sources: List[models.Sources])
 
-@main("Welcome to Play 2.1") {
-
-   <table>
-        <tr>
-            <th>Source</th>
-            <th>Headline</th>
-        </tr>
+@main("News Agenda") {
 
     @for(source<-sources) {
-        <tr>
-            <td>@source.name<td>
-            @for(item<-source.items) {
-                <td><a href="@item.url">@item.headline</a></td>
+        <div class="source column">
+            <h2 class="source--@source.name">@source.name</h2>
+            <ol>
+            @for((item, i) <- source.items.zipWithIndex) {
+                <li class="story">
+                  <a href="@item.url">
+                    <span class="story__position">@{i+1}</span>
+                    <span class="story__title">@item.headline</span>
+                  </a>
+                </li>
             }
-        </tr>
-
+            </ol>
+        </div>
     }
-    </table>
 }
