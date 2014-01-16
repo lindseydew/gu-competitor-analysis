@@ -31,9 +31,33 @@ object Application extends Controller {
     json match {
       case Some(JsArray(items)) =>{
         val data = items.map(_.as[ParsedItem])
-        val sourcesData = Sources(source,
-          data.map(d =>
-            NewsItem(d.linkText, d.url, Position(d.height, d.width, d.top, d.left))).toList.sortBy(-_.position.score))
+
+        val newList = data.map(d =>
+          NewsItem(d.linkText, d.url, Position(d.height, d.width, d.top, d.left))).toList.sortBy(-_.position.score)
+
+        def generateDelta(old: List[NewsItem], replacement: List[NewsItem]) = {
+          replacement.zipWithIndex.map{case(key, i) =>
+            val oldIndex = old.indexOf(key)
+
+            if (oldIndex == -1) {
+              NewsItem(key.headline, key.url, key.position, "new!")
+            } else if (i < oldIndex ){
+              NewsItem(key.headline, key.url, key.position, "+"+(oldIndex - i))
+            } else if (oldIndex < i) {
+              NewsItem(key.headline, key.url, key.position, (oldIndex - i).toString)
+            } else {
+              NewsItem(key.headline, key.url, key.position, "<->")
+            }
+          }
+        }
+
+
+        // This is horrible
+        val oldList = info.getOrElse(source, Sources(source, List())).items
+        val sourcesData = Sources(source, generateDelta(oldList, newList))
+
+
+
         info = info.updated(source, sourcesData)
         println(s"$source saved")
       }

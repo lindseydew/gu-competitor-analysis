@@ -29,5 +29,35 @@ class ApplicationSpec extends Specification {
         contentAsString(home) must contain ("Your new application is ready.")
       }
     }
+
+    "should be able to get new positions" in {
+      val original = List("one", "two", "three")
+      val hotnspicy = List("three", "two", "four", "one")
+
+      case class Delta(name: String, movement: String)
+      def generateDelta(old: List[String], replacement: List[String]) = {
+        replacement.zipWithIndex.map{case(key, i) =>
+          val oldIndex = old.indexOf(key)
+
+          if (oldIndex == -1) {
+            Delta(key, "new!")
+          } else if (i < oldIndex ){
+            Delta(key, "+"+(oldIndex - i))
+          } else if (oldIndex < i) {
+            Delta(key, (oldIndex - i).toString)
+          } else {
+            Delta(key, "<->")
+          }
+        }
+      }
+
+      generateDelta(original, hotnspicy) === List(
+        Delta("three", "+2"),
+        Delta("two", "<->"),
+        Delta("four", "new!"),
+        Delta("one", "-3"))
+
+
+    }
   }
 }

@@ -6,7 +6,7 @@ case class Position(width: Int, height: Int, xOffset: Int, yOffset: Int) {
 }
 
 case class Sources(name: String, items: List[NewsItem])
-case class NewsItem(headline: String, url: String, position: Position)
+case class NewsItem(headline: String, url: String, position: Position, movement: String = "new!")
 
 object NewsItems {
   var info: Map[String, Sources] = Map[String, Sources]()
