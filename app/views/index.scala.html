@@ -1,11 +1,17 @@
 @(sources: List[models.Sources])
 
-@main("News Agenda") {
+@main("News Schedule Analyser") {
 
+    <h1 class="app-header"><span class="app-header--text">News Schedule Analyser</span></h1>
+
+    <div class="sources">
     @for(source<-sources) {
         <div class="source column">
-            <h2 class="source--heading source--@source.name">@source.name</h2>
-            <ol>
+            <h2 class="source--heading source--@source.name">
+              <span class="source--name">@source.name</span>
+              <span class="source--count">@source.items.size stories</span>
+            </h2>
+            <ol class="source--content">
             @for((item, i) <- source.items.zipWithIndex) {
                 <li class="story">
                   <a href="@item.url">
@@ -17,4 +23,5 @@
             </ol>
         </div>
     }
+    </div>
 }
