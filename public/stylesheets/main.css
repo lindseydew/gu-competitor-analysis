@@ -1,0 +1,31 @@
+body {
+    font-family: sans-serif;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+ol, ul, li {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+
+.column {
+    width: 400px;
+    float: left;
+}
+.story {
+    margin-bottom: 10px;
+}
+.story__position {
+    font-size: 30px;
+    color: #aaa;
+    vertical-align: top;
+}
+.story__title {
+    margin-left: 10px;
+}
