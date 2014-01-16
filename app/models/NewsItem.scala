@@ -1,7 +1,7 @@
 package models
 
 case class Position(width: Int, height: Int, xOffset: Int, yOffset: Int) {
-  lazy val score = width*height + xOffset - yOffset
+  lazy val score = width*height/(yOffset + 1)
 
 }
 

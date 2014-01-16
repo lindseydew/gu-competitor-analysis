@@ -32,7 +32,7 @@ object Application extends Controller {
         val data = items.map(_.as[ParsedItem])
         val sourcesData = Sources(source,
           data.map(d =>
-            NewsItem(d.linkText, d.url, Position(d.height, d.width, d.top, d.left))).toList.sortBy(_.position.score))
+            NewsItem(d.linkText, d.url, Position(d.height, d.width, d.top, d.left))).toList.sortBy(-_.position.score))
         info = info.updated(source, sourcesData)
       }
       case _ => println("couldn't parse json")
