@@ -16,3 +16,4 @@ dist
 /.settings
 
 *.iml
+.tern-port

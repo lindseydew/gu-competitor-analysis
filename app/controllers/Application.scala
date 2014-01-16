@@ -14,7 +14,7 @@ object ParsedItem  {
         (__ \"width").read[Int] ~
         (__ \"top").read[Int] ~
         (__ \"left").read[Int] ~
-        (__ \"linkText").read[String] ~
+        (__ \"headline").read[String] ~
         (__ \"url").read[String]
       )(ParsedItem.apply _)
 }
