@@ -1,15 +1,19 @@
-@(items: List[models.NewsItem])
+@(sources: List[models.Sources])
 
 @main("Welcome to Play 2.1") {
 
    <table>
         <tr>
+            <th>Source</th>
             <th>Headline</th>
         </tr>
 
-    @for(item<-items) {
+    @for(source<-sources) {
         <tr>
-            <td><a href="@item.url">@item.headline</a></td>
+            <td>@source.name<td>
+            @for(item<-source.items) {
+                <td><a href="@item.url">@item.headline</a></td>
+            }
         </tr>
 
     }
