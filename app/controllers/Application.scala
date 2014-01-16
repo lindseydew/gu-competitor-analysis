@@ -5,13 +5,15 @@ import play.api.mvc._
 import models.{NewsItems, NewsItem}
 import play.api.libs.json._
 
-case class ParsedItem(height: Int, width: Int, linkText: String, url: String)
+case class ParsedItem(height: Int, width: Int, top: Int, left: Int, linkText: String, url: String)
 
 object ParsedItem  {
   import _root_.play.api.libs.functional.syntax._
   implicit val reads: Reads[ParsedItem]  = (
       (__ \"height").read[Int] ~
         (__ \"width").read[Int] ~
+        (__ \"top").read[Int] ~
+        (__ \"left").read[Int] ~
         (__ \"linkText").read[String] ~
         (__ \"url").read[String]
       )(ParsedItem.apply _)
@@ -21,11 +23,9 @@ object ParsedItem  {
 object Application extends Controller {
 
   def index = Action {
-
-    Ok("hello world")
+    val items = NewsItems.all
+    Ok(views.html.index(items))
   }
-
-
   def insert(source: String) = Action { implicit request =>
     val json = request.body.asJson
     json match {
