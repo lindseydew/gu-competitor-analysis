@@ -19,9 +19,6 @@ object ParsedItem  {
       )(ParsedItem.apply _)
 }
 
-
-
-
 object Application extends Controller {
 
   var info: Map[String, Sources] = Map[String, Sources]()
@@ -33,7 +30,9 @@ object Application extends Controller {
     json match {
       case Some(JsArray(items)) =>{
         val data = items.map(_.as[ParsedItem])
-        val sourcesData = Sources(source,data.map(d => NewsItem(d.linkText, d.url, Position(d.height, d.width, d.top, d.left))).toList)
+        val sourcesData = Sources(source,
+          data.map(d =>
+            NewsItem(d.linkText, d.url, Position(d.height, d.width, d.top, d.left))).toList.sortBy(_.position.score))
         info = info.updated(source, sourcesData)
       }
       case _ => println("couldn't parse json")
