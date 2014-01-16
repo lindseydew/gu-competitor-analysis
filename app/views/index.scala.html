@@ -4,7 +4,7 @@
 
     @for(source<-sources) {
         <div class="source column">
-            <h2 class="source--@source.name">@source.name</h2>
+            <h2 class="source--heading source--@source.name">@source.name</h2>
             <ol>
             @for((item, i) <- source.items.zipWithIndex) {
                 <li class="story">
