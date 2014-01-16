@@ -18,7 +18,10 @@ childProcess.execFile(binPath, childArgs, function(err, stdout, stderr) {
     hostname: 'localhost',
     port: 9000,
     path: '/insert/' + source,
-    method: 'POST'
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    }
   };
   var post_req = http.request(options, function(res) {
     res.setEncoding('utf8');
@@ -29,6 +32,6 @@ childProcess.execFile(binPath, childArgs, function(err, stdout, stderr) {
       console.log("Sent");
     });
   });
-  post_req.write(JSON.stringify(links));
+  post_req.write(links);
   post_req.end();
 });

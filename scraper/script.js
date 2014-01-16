@@ -97,17 +97,15 @@ var providers = {
     }
   },
   telegraph: {
-  },
-  telegraph: {
   }
 };
 
 var provider = providers[source];
 var url = provider.url;
-console.log("Opening", url, "for", source);
+// console.log("Opening", url, "for", source);
 page.open(url, function (status) {
   if (status === 'success') {
-    console.log("Page: ", page.title);
+    // console.log("Page: ", page.title);
     var storyContainers = page.evaluate(provider.extractor);
     console.log(JSON.stringify(storyContainers));
   } else {
