@@ -7,9 +7,9 @@
     <div class="sources">
     @for(source<-sources) {
         <div class="source column">
-            <h2 class="source--heading source--@source.name">
-              <span class="source--name">@source.name</span>
-              <span class="source--count">@source.items.size stories</span>
+            <h2 class="source--heading">
+              <span class="source--name source--@source.name">@source.name</span>
+              <span class="source--count">@source.items.size</span>
             </h2>
             <ol class="source--content">
             @for((item, i) <- source.items.zipWithIndex) {

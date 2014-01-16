@@ -14,7 +14,7 @@ sources.forEach(function(source) {
   console.log("Source: ", source);
   childProcess.execFile(binPath, childArgs, function(err, stdout, stderr) {
     var links = stdout;
-    console.log("Got " +links.length+ " links, posting...");
+    console.log("Got " +JSON.parse(links).length+ " links for " +source+ ", posting...");
 
     var options = {
       hostname: 'localhost',

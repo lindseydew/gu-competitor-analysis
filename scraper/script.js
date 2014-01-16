@@ -41,7 +41,13 @@ var providers = {
       var containers = [].slice.call(document.querySelectorAll('.story:not(.advertisement)'));
       return containers.map(function(container) {
         // FIXME: don't capture section
-        var link = container.querySelector('a');
+        var link = container.querySelector('.headline a') ||
+                   container.querySelector('h2 a') ||
+                   container.querySelector('h3 a') ||
+                   container.querySelector('h4 a') ||
+                   container.querySelector('h5 a') ||
+                   container.querySelector('h6 a') ||
+                   container.querySelector('a');
         var o = offsets(container);
         return {
           headline: link && link.textContent.trim().replace(/\s+/g, ' '),

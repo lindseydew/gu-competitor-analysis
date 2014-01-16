@@ -47,10 +47,36 @@ h1, h2, h3 {
 }
 
 .source--heading {
-    background-color: #f3f3f3;
+    background-color: #f5f5f5;
     margin-bottom: 3px;
+    position: relative;
 }
 .source--content {}
+
+.source--name {
+    background: no-repeat center left;
+    display: block;
+    height: 60px;
+    text-indent: -9999px;
+}
+.source--guardian {
+    background-image: url(../images/icons/guardian-logo.png);
+}
+.source--mailonline {
+    background-image: url(../images/icons/mailonline-logo.png);
+}
+.source--nytimes {
+    background-image: url(../images/icons/nytimes-logo.png);
+}
+.source--count {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    padding: 5px;
+    background-color: #fff;
+    color: #aaa;
+    border-radius: 10px;
+}
 
 .story {
     padding: 5px;

@@ -26,6 +26,7 @@ object Application extends Controller {
     Ok(views.html.index(info.values.toList))
   }
   def insert(source: String) = Action { implicit request =>
+    println(s"receive $source")
     val json = request.body.asJson
     json match {
       case Some(JsArray(items)) =>{
@@ -34,6 +35,7 @@ object Application extends Controller {
           data.map(d =>
             NewsItem(d.linkText, d.url, Position(d.height, d.width, d.top, d.left))).toList.sortBy(-_.position.score))
         info = info.updated(source, sourcesData)
+        println(s"$source saved")
       }
       case _ => println("couldn't parse json")
     }
