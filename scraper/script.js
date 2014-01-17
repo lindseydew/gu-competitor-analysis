@@ -1,37 +1,70 @@
-var page = require('webpage').create();
 var system = require('system');
 
 var source = system.args[1];
 
 
 var providers = {
+  guardianOld: {
+    url: 'http://www.theguardian.com/uk',
+    extractor: function () {
+      var containers = [].slice.call(document.querySelectorAll('.inline-pic, .pixie, .mugshot'));
+      return containers.map(function(container) {
+        var link = container.querySelector('.strap a') ||
+              container.querySelector('h1 a') ||
+              container.querySelector('h2 a') ||
+              container.querySelector('h3 a') ||
+              container.querySelector('h4 a');
+        var pos = position(container);
+        return link && {
+          headline: link.textContent.trim().replace(/\s+/g, ' '),
+          url: link.href,
+          height: container.clientHeight,
+          width: container.clientWidth,
+          top: pos.top,
+          left: pos.left
+        };
+      }).filter(function(x){ return !!x; });
+
+      function position(obj) {
+        var curleft = 0;
+        var curtop = 0;
+        if (obj.offsetParent) {
+          do {
+            curleft += obj.offsetLeft;
+            curtop += obj.offsetTop;
+          } while ((obj = obj.offsetParent));
+        }
+        return {top: Math.round(curtop), left: Math.round(curleft)};
+      }
+    }
+  },
   guardian: {
     url: 'http://www.theguardian.com/uk?view=mobile',
     extractor: function () {
       var containers = [].slice.call(document.querySelectorAll('.item'));
       return containers.map(function(container) {
         var link = container.querySelector('.item__link');
-        var o = offsets(container);
+        var pos = position(container);
         return {
           headline: link.textContent.trim().replace(/\s+/g, ' '),
           url: link.href,
           height: container.clientHeight,
           width: container.clientWidth,
-          top: o.top,
-          left: o.left
+          top: pos.top,
+          left: pos.left
         };
       });
 
-      function offsets(node) {
-        if (!node || node === document.documentElement) {
-          return {top: 0, left: 0};
-        } else {
-          var parentOffsets = offsets(node.parentNode);
-          return {
-            top:  node.offsetTop  + parentOffsets.top,
-            left: node.offsetLeft + parentOffsets.left
-          };
+      function position(obj) {
+        var curleft = 0;
+        var curtop = 0;
+        if (obj.offsetParent) {
+          do {
+            curleft += obj.offsetLeft;
+            curtop += obj.offsetTop;
+          } while ((obj = obj.offsetParent));
         }
+        return {top: Math.round(curtop), left: Math.round(curleft)};
       }
     }
   },
@@ -39,8 +72,11 @@ var providers = {
     url: 'http://www.nytimes.com/',
     extractor: function() {
       var containers = [].slice.call(document.querySelectorAll('.story:not(.advertisement)'));
+      var timesMinuteContainer = document.querySelector('#timesMinuteContainer .story');
+      containers = containers.filter(function(c) {
+        return c !== timesMinuteContainer;
+      });
       return containers.map(function(container) {
-        // FIXME: don't capture section
         var link = container.querySelector('.headline a') ||
                    container.querySelector('h2 a') ||
                    container.querySelector('h3 a') ||
@@ -48,27 +84,27 @@ var providers = {
                    container.querySelector('h5 a') ||
                    container.querySelector('h6 a') ||
                    container.querySelector('a');
-        var o = offsets(container);
+        var pos = position(container);
         return {
           headline: link && link.textContent.trim().replace(/\s+/g, ' '),
           url: link && link.href,
           height: container.clientHeight,
           width: container.clientWidth,
-          top: o.top,
-          left: o.left
+          top: pos.top,
+          left: pos.left
         };
       });
 
-      function offsets(node) {
-        if (!node || node === document.documentElement) {
-          return {top: 0, left: 0};
-        } else {
-          var parentOffsets = offsets(node.parentNode);
-          return {
-            top:  node.offsetTop  + parentOffsets.top,
-            left: node.offsetLeft + parentOffsets.left
-          };
+      function position(obj) {
+        var curleft = 0;
+        var curtop = 0;
+        if (obj.offsetParent) {
+          do {
+            curleft += obj.offsetLeft;
+            curtop += obj.offsetTop;
+          } while ((obj = obj.offsetParent));
         }
+        return {top: Math.round(curtop), left: Math.round(curleft)};
       }
     }
   },
@@ -78,41 +114,77 @@ var providers = {
       var containers = [].slice.call(document.querySelectorAll('.article'));
       return containers.map(function(container) {
         var link = container.querySelector('h2 a');
-        var o = offsets(container);
+        var pos = position(container);
         return {
           headline: link && link.textContent.trim().replace(/\s+/g, ' '),
           url: link && link.href,
           height: container.clientHeight,
           width: container.clientWidth,
-          top: o.top,
-          left: o.left
+          top: pos.top,
+          left: pos.left
         };
       });
 
-      function offsets(node) {
-        if (!node || node === document.documentElement) {
-          return {top: 0, left: 0};
-        } else {
-          var parentOffsets = offsets(node.parentNode);
-          return {
-            top:  node.offsetTop  + parentOffsets.top,
-            left: node.offsetLeft + parentOffsets.left
-          };
+      function position(obj) {
+        var curleft = 0;
+        var curtop = 0;
+        if (obj.offsetParent) {
+          do {
+            curleft += obj.offsetLeft;
+            curtop += obj.offsetTop;
+          } while ((obj = obj.offsetParent));
         }
+        return {top: Math.round(curtop), left: Math.round(curleft)};
       }
     }
   },
   telegraph: {
+    url: 'http://www.telegraph.co.uk/',
+    extractor: function() {
+      var containers = [].slice.call(document.querySelectorAll('.summary, .comment'));
+      return containers.map(function(container) {
+        var link = container.querySelector('h2 a, h3 a');
+        var pos = position(container);
+        return {
+          headline: link && link.textContent.trim().replace(/\s+/g, ' '),
+          url: link && link.href,
+          height: container.clientHeight,
+          width: container.clientWidth,
+          top: pos.top,
+          left: pos.left
+        };
+      });
+
+      function position(obj) {
+        var curleft = 0;
+        var curtop = 0;
+        if (obj.offsetParent) {
+          do {
+            curleft += obj.offsetLeft;
+            curtop += obj.offsetTop;
+          } while ((obj = obj.offsetParent));
+        }
+        return {top: Math.round(curtop), left: Math.round(curleft)};
+      }
+    }
   }
 };
 
 var provider = providers[source];
 var url = provider.url;
 // console.log("Opening", url, "for", source);
+
+var page = require('webpage').create();
+page.viewportSize = {
+  width: 1024,
+  height: 768
+};
+page.zoomFactor = 1;
 page.open(url, function (status) {
   if (status === 'success') {
     // console.log("Page: ", page.title);
     var storyContainers = page.evaluate(provider.extractor);
+    console.log("--output--");
     console.log(JSON.stringify(storyContainers));
   } else {
     console.log("error opening the page");

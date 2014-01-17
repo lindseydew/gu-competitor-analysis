@@ -1,13 +1,35 @@
 package models
 
-case class Position(width: Int, height: Int, xOffset: Int, yOffset: Int) {
-  lazy val score = width*height
+case class Position(width: Int, height: Int, xOffset: Int, yOffset: Int, maxOffset: Int) {
+  lazy val score = {
+    // percentage of the vertical offset, 1 at the top and 0 at the bottom
+    val verticalPenalty = (1 - (yOffset.toDouble / maxOffset.toDouble))
+    width * height * verticalPenalty * verticalPenalty
+  }
 
 }
 
 case class Source(name: String, items: List[NewsItem])
 
-case class NewsItem(headline: String, url: String, entities: List[String], position: Position, linkTo: List[NewsItem]=Nil)
+case class NewsItem(headline: String, url: String, entities: List[String], position: Position, movement: String = "new",  linkTo: List[NewsItem]=Nil) {
+
+  def indicator = {
+    if (movement == "new") { "new" }
+    else if (movement.toInt < 0) { "down" }
+    else if (movement.toInt > 0) { "up" }
+    else { "nomovement" }
+  }
+
+  lazy val shortenedHeadline = {
+    val maxHeadlineLen = 100
+    if (headline.length > maxHeadlineLen) {
+      headline.substring(0, maxHeadlineLen - 3) + "..."
+    } else {
+      headline
+    }
+  }
+}
+
 
 case class Entities(headline: String, entities: List[String])
 
@@ -21,4 +43,5 @@ object Story {
 
 object NewsItems {
   var info: Map[String, Source] = Map[String, Source]()
+
 }

@@ -6,7 +6,7 @@
 
     <div class="sources">
     @for(source<-sources) {
-        <div class="source column">
+        <div class="source column column--@source.name">
             <h2 class="source--heading">
               <span class="source--name source--@source.name">@source.name</span>
               <span class="source--count">@source.items.size</span>
@@ -16,12 +16,31 @@
                 <li class="story">
                   <a href="@item.url">
                     <span class="story__position">@{i+1}</span>
-                    <span class="story__title">@item.headline</span>
+                    <span class="story__title">@item.shortenedHeadline
+
+                        @if(item.indicator == "up") {
+                            <img src="@routes.Assets.at("images/icons/Arrow-up.png")" /> @item.movement
+                        }
+                        @if(item.indicator == "down") {
+                            <img src="@routes.Assets.at("images/icons/Arrow-down.png")" /> @item.movement
+                        }
+                        @if(item.indicator == "new") {
+                        <img src="@routes.Assets.at("images/icons/new-icon.png")" />
+                        }
+                        </span>
                   </a>
                 </li>
+                <!--
+                    w: @item.position.width
+                    h: @item.position.height
+                    left: @item.position.xOffset
+                    top: @item.position.yOffset
+                    score: @item.position.score
+                -->
             }
             </ol>
         </div>
     }
     </div>
 }
+

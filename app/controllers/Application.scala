@@ -53,12 +53,32 @@ object Application extends Controller {
     json match {
       case Some(JsArray(items)) =>{
         val data = items.map(_.as[ParsedItem])
-        val sourcesData = Source(source,
-          data.map(d =>
-            NewsItem(d.linkText, d.url, Story.processStory(d.linkText),
-            Position(d.height, d.width, d.top, d.left))
-          ).toList.sortBy(-_.position.score)
-        )
+
+        val maxTop = data.map(_.top).max
+        val newList = data.map(d =>
+          NewsItem(d.linkText, d.url,  Story.processStory(d.linkText),Position(d.height, d.width, d.left, d.top, maxTop))).toList.sortBy(- _.position.score)
+
+        def generateDelta(old: List[NewsItem], replacement: List[NewsItem]) = {
+          replacement.zipWithIndex.map{case(key, i) =>
+            val oldIndex = old.map(_.url).indexOf(key.url)
+
+            if (oldIndex == -1) {
+              NewsItem(key.headline, key.url, key.entities, key.position, "new")
+            } else if (i < oldIndex ){
+              NewsItem(key.headline, key.url, key.entities, key.position, (oldIndex - i).toString)
+            } else if (oldIndex < i) {
+              NewsItem(key.headline, key.url, key.entities, key.position, (oldIndex - i).toString)
+            } else {
+              NewsItem(key.headline, key.url, key.entities, key.position, "0")
+            }
+          }
+        }
+
+
+        // This is horrible
+        val oldList = info.getOrElse(source, Source(source, List())).items
+        val sourcesData = Source(source, generateDelta(oldList, newList))
+
         info = info.updated(source, sourcesData)
       }
       case _ => println("couldn't parse json")
