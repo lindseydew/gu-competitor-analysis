@@ -38,16 +38,16 @@ object Application extends Controller {
 
         def generateDelta(old: List[NewsItem], replacement: List[NewsItem]) = {
           replacement.zipWithIndex.map{case(key, i) =>
-            val oldIndex = old.indexOf(key)
+            val oldIndex = old.map(_.url).indexOf(key.url)
 
             if (oldIndex == -1) {
-              NewsItem(key.headline, key.url, key.position, "new!")
+              NewsItem(key.headline, key.url, key.position, "new")
             } else if (i < oldIndex ){
-              NewsItem(key.headline, key.url, key.position, "+"+(oldIndex - i))
+              NewsItem(key.headline, key.url, key.position, (oldIndex - i).toString)
             } else if (oldIndex < i) {
               NewsItem(key.headline, key.url, key.position, (oldIndex - i).toString)
             } else {
-              NewsItem(key.headline, key.url, key.position, "<->")
+              NewsItem(key.headline, key.url, key.position, "0")
             }
           }
         }
