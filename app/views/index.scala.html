@@ -13,16 +13,16 @@
             </h2>
             <ol class="source--content">
             @for((item, i) <- source.items.zipWithIndex) {
-                <li class="story">
+                <li class="story" data-url="@item.url" data-related="@{item.linkTo.map(_.url).mkString(" ")}">
                   <a href="@item.url">
                     <span class="story__position">@{i+1}</span>
                     <span class="story__title">@item.shortenedHeadline
 
                         @if(item.indicator == "up") {
-                            <img class="story__indicator--movement" src="@routes.Assets.at("images/icons/Arrow-up.png")" /> @item.movement
+                            <img class="story__indicator--movement" src="@routes.Assets.at("images/icons/Arrow-up.png")" />
                         }
                         @if(item.indicator == "down") {
-                            <img class="story__indicator--movement" src="@routes.Assets.at("images/icons/Arrow-down.png")" /> @item.movement
+                            <img class="story__indicator--movement" src="@routes.Assets.at("images/icons/Arrow-down.png")" />
                         }
                         @if(item.indicator == "new") {
                         <img class="story__indicator--new" src="@routes.Assets.at("images/icons/New-icon.png")" />

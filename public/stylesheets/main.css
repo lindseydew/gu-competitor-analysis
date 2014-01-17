@@ -121,8 +121,16 @@ h1, h2, h3 {
     left: 5px;
 }
 
-story__indicator--new {
+.story__indicator--new {
     position: absolute;
     bottom: 5px;
     left: 6px;
+}
+
+.current {
+    /* background-color: #448ccb; */
+    background-color: #dbeeff;
+}
+.related {
+    background-color: #dbeeff;
 }
