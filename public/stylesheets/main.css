@@ -113,3 +113,16 @@ h1, h2, h3 {
     padding-left: 50px;
     display: block;
 }
+
+
+.story__indicator--movement {
+    position: absolute;
+    top: 32px;
+    left: 5px;
+}
+
+story__indicator--new {
+    position: absolute;
+    bottom: 5px;
+    left: 6px;
+}
