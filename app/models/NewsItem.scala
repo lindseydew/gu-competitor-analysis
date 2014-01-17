@@ -4,8 +4,9 @@ case class Position(width: Int, height: Int, xOffset: Int, yOffset: Int, maxOffs
   lazy val score = {
     // percentage of the vertical offset, 1 at the top and 0 at the bottom
     val verticalPenalty = (1 - (yOffset.toDouble / maxOffset.toDouble))
-    width * height * verticalPenalty * verticalPenalty
-  }
+    (width + height) * verticalPenalty * verticalPenalty * verticalPenalty
+    //math.sqrt(width * height) * verticalPenalty *
+ }
 
 }
 
