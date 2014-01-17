@@ -13,8 +13,13 @@ sources.forEach(function(source) {
 
   console.log("Source: ", source);
   childProcess.execFile(binPath, childArgs, function(err, stdout, stderr) {
-    var links = stdout;
-    console.log("Got " +JSON.parse(links).length+ " links for " +source+ ", posting...");
+    var links = stdout.split('--output--')[1];
+    try {
+      console.log("Got " +JSON.parse(links).length+ " links for " +source+ ", posting...");
+    } catch(e) {
+      console.log("Invalid JSON from "+source);
+      console.log(links);
+    }
 
     var options = {
       hostname: 'localhost',

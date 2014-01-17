@@ -32,8 +32,9 @@ object Application extends Controller {
       case Some(JsArray(items)) =>{
         val data = items.map(_.as[ParsedItem])
 
+        val maxTop = data.map(_.top).max
         val newList = data.map(d =>
-          NewsItem(d.linkText, d.url, Position(d.height, d.width, d.top, d.left))).toList.sortBy(-_.position.score)
+          NewsItem(d.linkText, d.url, Position(d.height, d.width, d.left, d.top, maxTop))).toList.sortBy(- _.position.score)
 
         def generateDelta(old: List[NewsItem], replacement: List[NewsItem]) = {
           replacement.zipWithIndex.map{case(key, i) =>
@@ -55,8 +56,6 @@ object Application extends Controller {
         // This is horrible
         val oldList = info.getOrElse(source, Sources(source, List())).items
         val sourcesData = Sources(source, generateDelta(oldList, newList))
-
-
 
         info = info.updated(source, sourcesData)
         println(s"$source saved")

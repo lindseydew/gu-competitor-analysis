@@ -1,7 +1,11 @@
 package models
 
-case class Position(width: Int, height: Int, xOffset: Int, yOffset: Int) {
-  lazy val score = width*height
+case class Position(width: Int, height: Int, xOffset: Int, yOffset: Int, maxOffset: Int) {
+  lazy val score = {
+    // percentage of the vertical offset, 1 at the top and 0 at the bottom
+    val verticalPenalty = (1 - (yOffset.toDouble / maxOffset.toDouble))
+    width*height * verticalPenalty * verticalPenalty
+  }
 
 }
 
@@ -13,14 +17,14 @@ object NewsItems {
 
   def all = List(Sources("the guardian",List(
                 NewsItem("NSA spying on us again", "http://www.gu.com/2134",
-                         Position(380, 480, 0, 0)),
+                         Position(380, 480, 0, 0, 300)),
                 NewsItem("NSA spying on us again", "http://www.gu.com/2134",
-                        Position(120, 60, 70, 100)),
+                        Position(120, 60, 70, 100, 300)),
                 NewsItem("NSA spying on us again", "http://www.gu.com/2134",
-                        Position(30, 30, 500, 300))
+                        Position(30, 30, 500, 300, 300))
                 ).sortBy(_.position.score)),
                 Sources("daily mail", List(
-                  NewsItem("BOOBS", "http://dailymail.CO.UK/boobs", Position(10000, 10000, 1, 3)))
+                  NewsItem("BOOBS", "http://dailymail.CO.UK/boobs", Position(10000, 10000, 1, 3, 3)))
                   )
                 )
 }
