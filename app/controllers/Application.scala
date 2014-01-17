@@ -33,11 +33,17 @@ object ParsedItem  {
 object Application extends Controller {
   var info: Map[String, Source] = Map[String, Source]()
   def index = Action {
-    for(things<-info.values.toList;
-                       item<-things.items) {
+//    for(things<-info.values.toList;
+//                       item<-things.items) {
+//        item.copy(linkTo= matchingNewsItem(item.entities))
+//    }
+    val tmp = info.values.toList.map { source =>
+      source.copy(items = source.items.map { item =>
         item.copy(linkTo= matchingNewsItem(item.entities))
+      })
     }
-    Ok(views.html.index(info.values.toList))
+
+    Ok(views.html.index(tmp))
   }
 
   def matchingNewsItem(entities: List[String]): List[NewsItem] = {
@@ -45,6 +51,8 @@ object Application extends Controller {
         item<-things.items;
         if(!entities.intersect(item.entities).isEmpty && !entities.diff(item.entities).isEmpty)
     ) yield item
+    println("my entities are " + entities)
+    println("Do I get anything matching? " + matching)
     matching
   }
 
