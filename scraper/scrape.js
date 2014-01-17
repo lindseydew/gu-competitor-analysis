@@ -4,7 +4,7 @@ var path = require('path');
 var http = require('http');
 var binPath = phantomjs.path;
 
-var sources = ['guardian', 'nytimes', 'mailonline'];
+var sources = ['guardian', 'guardianOld', 'telegraph', 'nytimes', 'mailonline'];
 
 sources.forEach(function(source) {
   var childArgs = [

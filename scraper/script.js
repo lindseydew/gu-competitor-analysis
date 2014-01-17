@@ -4,6 +4,40 @@ var source = system.args[1];
 
 
 var providers = {
+  guardianOld: {
+    url: 'http://www.theguardian.com/uk',
+    extractor: function () {
+      var containers = [].slice.call(document.querySelectorAll('.inline-pic, .pixie, .mugshot'));
+      return containers.map(function(container) {
+        var link = container.querySelector('.strap a') ||
+              container.querySelector('h1 a') ||
+              container.querySelector('h2 a') ||
+              container.querySelector('h3 a') ||
+              container.querySelector('h4 a');
+        var pos = position(container);
+        return link && {
+          headline: link.textContent.trim().replace(/\s+/g, ' '),
+          url: link.href,
+          height: container.clientHeight,
+          width: container.clientWidth,
+          top: pos.top,
+          left: pos.left
+        };
+      }).filter(function(x){ return !!x; });
+
+      function position(obj) {
+        var curleft = 0;
+        var curtop = 0;
+        if (obj.offsetParent) {
+          do {
+            curleft += obj.offsetLeft;
+            curtop += obj.offsetTop;
+          } while ((obj = obj.offsetParent));
+        }
+        return {top: Math.round(curtop), left: Math.round(curleft)};
+      }
+    }
+  },
   guardian: {
     url: 'http://www.theguardian.com/uk?view=mobile',
     extractor: function () {
@@ -105,6 +139,34 @@ var providers = {
     }
   },
   telegraph: {
+    url: 'http://www.telegraph.co.uk/',
+    extractor: function() {
+      var containers = [].slice.call(document.querySelectorAll('.summary, .comment'));
+      return containers.map(function(container) {
+        var link = container.querySelector('h2 a, h3 a');
+        var pos = position(container);
+        return {
+          headline: link && link.textContent.trim().replace(/\s+/g, ' '),
+          url: link && link.href,
+          height: container.clientHeight,
+          width: container.clientWidth,
+          top: pos.top,
+          left: pos.left
+        };
+      });
+
+      function position(obj) {
+        var curleft = 0;
+        var curtop = 0;
+        if (obj.offsetParent) {
+          do {
+            curleft += obj.offsetLeft;
+            curtop += obj.offsetTop;
+          } while ((obj = obj.offsetParent));
+        }
+        return {top: Math.round(curtop), left: Math.round(curleft)};
+      }
+    }
   }
 };
 

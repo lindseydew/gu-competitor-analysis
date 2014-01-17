@@ -1,6 +1,6 @@
 body {
     font-family: Georgia, serif;
-    width: 2000px;
+    width: 2400px;
     color: #333;
     background-color: #303030;
     padding: 0;
@@ -41,9 +41,12 @@ h1, h2, h3 {
 }
 
 .column {
-    width: 400px;
+    width: 320px;
     float: left;
     margin-right: 8px;
+}
+.column--guardian {
+    display: none;
 }
 
 .source--heading {
@@ -54,12 +57,12 @@ h1, h2, h3 {
 .source--content {}
 
 .source--name {
-    background: no-repeat center left;
+    background: no-repeat 6px center;
     display: block;
     height: 60px;
     text-indent: -9999px;
 }
-.source--guardian {
+.source--guardianOld {
     background-image: url(../images/icons/guardian-logo.png);
 }
 .source--mailonline {
@@ -68,28 +71,41 @@ h1, h2, h3 {
 .source--nytimes {
     background-image: url(../images/icons/nytimes-logo.png);
 }
+.source--telegraph {
+    background-image: url(../images/icons/telegraph-logo.png);
+}
+
 .source--count {
+    font-family: Helvetica Neue, Arial, sans-serif;
+    font-size: 16px;
     position: absolute;
     right: 10px;
-    top: 10px;
-    padding: 5px;
-    background-color: #fff;
-    color: #aaa;
-    border-radius: 10px;
+    top: 15px;
+    padding: 8px;
+    background-color: #5d5d5d;
+    color: #fff;
+    border-radius: 15px;
 }
 
 .story {
     padding: 5px;
     margin-bottom: 1px;
     background-color: #fff;
+    position: relative;
+    min-height: 60px;
 }
 .story__position {
     font-family: Helvetica Neue, Arial, sans-serif;
     font-weight: light;
-    font-size: 30px;
-    color: #ccc;
+    font-size: 24px;
+    color: #6bb4e7;
     vertical-align: top;
+
+    position: absolute;
+    top: 2px;
+    left: 6px;
 }
 .story__title {
-    margin-left: 10px;
+    padding-left: 50px;
+    display: block;
 }
