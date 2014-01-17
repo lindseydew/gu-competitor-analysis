@@ -35,7 +35,7 @@ case class NewsItem(headline: String, url: String, entities: List[String], posit
 case class Entities(headline: String, entities: List[String])
 
 object Story {
-  val excludedWords = List("A", "The", "On", "And", "Why")
+  val excludedWords = List("A", "The", "On", "And", "Why", "Is")
   def processStory(headline: String): List[String] = {
     val words = headline.split(" ")
     (for(word<-words; c<-word; if(c.isUpper && !excludedWords.contains(word))) yield word).toList
