@@ -16,7 +16,18 @@
                 <li class="story">
                   <a href="@item.url">
                     <span class="story__position">@{i+1}</span>
-                    <span class="story__title">@item.shortenedHeadline @item.indicator @item.movement</span>
+                    <span class="story__title">@item.shortenedHeadline
+
+                        @if(item.indicator == "up") {
+                            <img src="@routes.Assets.at("images/icons/Arrow-up.png")" /> @item.movement
+                        }
+                        @if(item.indicator == "down") {
+                            <img src="@routes.Assets.at("images/icons/Arrow-down.png")" /> @item.movement
+                        }
+                        @if(item.indicator == "new") {
+                        <img src="@routes.Assets.at("images/icons/new-icon.png")" />
+                        }
+                        </span>
                   </a>
                 </li>
                 <!--
@@ -32,3 +43,4 @@
     }
     </div>
 }
+

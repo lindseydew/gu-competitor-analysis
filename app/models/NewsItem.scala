@@ -18,6 +18,7 @@ case class NewsItem(headline: String, url: String, position: Position, movement:
     else if (movement.toInt < 0) { "down" }
     else if (movement.toInt > 0) { "up" }
     else { "nomovement" }
+  }
 
   lazy val shortenedHeadline = {
     val maxHeadlineLen = 100
