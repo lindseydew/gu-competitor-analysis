@@ -11,7 +11,16 @@ case class Position(width: Int, height: Int, xOffset: Int, yOffset: Int, maxOffs
 }
 
 case class Sources(name: String, items: List[NewsItem])
-case class NewsItem(headline: String, url: String, position: Position, movement: String = "new!")
+case class NewsItem(headline: String, url: String, position: Position, movement: String = "new!") {
+  lazy val shortenedHeadline = {
+    val maxHeadlineLen = 100
+    if (headline.length > maxHeadlineLen) {
+      headline.substring(0, maxHeadlineLen - 3) + "..."
+    } else {
+      headline
+    }
+  }
+}
 
 object NewsItems {
   var info: Map[String, Sources] = Map[String, Sources]()
