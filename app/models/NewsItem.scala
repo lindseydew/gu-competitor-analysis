@@ -5,22 +5,26 @@ case class Position(width: Int, height: Int, xOffset: Int, yOffset: Int) {
 
 }
 
-case class Sources(name: String, items: List[NewsItem])
-case class NewsItem(headline: String, url: String, position: Position)
+case class Source(name: String, items: List[NewsItem])
+case class Story(entities: List[String], article: NewsItem, linkTo: List[NewsItem]=Nil)  {
+  val excludedWords = List("A", "The", "On", "And")
+  def processStory(headline: String): List[String] = {
+    val words = headline.split(" ")
+    (for(word<-words; if(word.head.isUpper && !excludedWords.contains(word))) yield word).toList
+  }
+}
+case class NewsItem(headline: String, url: String, entities: List[String], position: Position, linkTo: List[NewsItem]=Nil)
+
+case class Entities(headline: String, entities: List[String])
+
+object Story {
+  val excludedWords = List("A", "The", "On", "And")
+  def processStory(headline: String): List[String] = {
+    val words = headline.split(" ")
+    (for(word<-words; if(word.head.isUpper && !excludedWords.contains(word))) yield word).toList
+  }
+}
 
 object NewsItems {
-  var info: Map[String, Sources] = Map[String, Sources]()
-
-  def all = List(Sources("the guardian",List(
-                NewsItem("NSA spying on us again", "http://www.gu.com/2134",
-                         Position(380, 480, 0, 0)),
-                NewsItem("NSA spying on us again", "http://www.gu.com/2134",
-                        Position(120, 60, 70, 100)),
-                NewsItem("NSA spying on us again", "http://www.gu.com/2134",
-                        Position(30, 30, 500, 300))
-                ).sortBy(_.position.score)),
-                Sources("daily mail", List(
-                  NewsItem("BOOBS", "http://dailymail.CO.UK/boobs", Position(10000, 10000, 1, 3)))
-                  )
-                )
+  var info: Map[String, Source] = Map[String, Source]()
 }
