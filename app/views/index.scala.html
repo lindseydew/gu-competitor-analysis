@@ -19,13 +19,13 @@
                     <span class="story__title">@item.shortenedHeadline
 
                         @if(item.indicator == "up") {
-                            <img src="@routes.Assets.at("images/icons/Arrow-up.png")" /> @item.movement
+                            <img class="story__indicator--movement" src="@routes.Assets.at("images/icons/Arrow-up.png")" /> @item.movement
                         }
                         @if(item.indicator == "down") {
-                            <img src="@routes.Assets.at("images/icons/Arrow-down.png")" /> @item.movement
+                            <img class="story__indicator--movement" src="@routes.Assets.at("images/icons/Arrow-down.png")" /> @item.movement
                         }
                         @if(item.indicator == "new") {
-                        <img src="@routes.Assets.at("images/icons/new-icon.png")" />
+                        <img class="story__indicator--new" src="@routes.Assets.at("images/icons/New-icon.png")" />
                         }
                         </span>
                   </a>
